@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Books</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 30px;
+            margin: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* 🔍 Search Form */
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input[type="number"] {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #5c6bc0;
+            outline: none;
+            box-shadow: 0 0 6px rgba(92, 107, 192, 0.4);
+        }
+
+        button {
+            background: #5c6bc0;
+            color: #fff;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #3f51b5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(63, 81, 181, 0.3);
+        }
+
+        /* 📘 Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        th {
+            background: #5c6bc0;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        /* 🎯 Action Links */
+        td a {
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        td a:first-child {
+            background: #4caf50;
+            color: white;
+            margin-right: 5px;
+        }
+
+        td a:first-child:hover {
+            background: #45a049;
+        }
+
+        td a:last-child {
+            background: #f44336;
+            color: white;
+        }
+
+        td a:last-child:hover {
+            background: #d32f2f;
+        }
+
+        /* ➕ Add Book Button */
+        .add-btn {
+            display: block;
+            width: fit-content;
+            margin: 25px auto 0 auto;
+            background: #2196f3;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(33, 150, 243, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h2>All Books</h2>
+
+    <!-- 🔍 Search Form -->
+    <form th:action="@{/books/search}" method="get">
+        <label for="id">Search Book by ID:</label>
+        <input type="number" id="id" name="id" required />
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- 📘 Books Table -->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <th>Copies</th>
+            <th>Created At</th>
+            <th>Created By</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="book : ${bookList}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.genre}"></td>
+            <td th:text="${book.price}"></td>
+            <td th:text="${book.copies}"></td>
+            <td th:text="${book.createAt}"></td>
+            <td th:text="${book.createBy}"></td>
+            <td>
+                <a th:href="@{'/books/edit/' + ${book.id}}">Edit</a>
+                <a th:href="@{'/delete-book/' + ${book.id}}"
+                   onclick="return confirm('Are you sure you want to delete this book?');">
+                   Delete
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ➕ Add Book Button -->
+    <a th:href="@{/books/getform}" class="add-btn">+ Add New Book</a>
+</body>
+</html>

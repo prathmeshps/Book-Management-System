@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Success</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            width: 380px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        h2 {
+            color: #4caf50;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            background: #5c6bc0;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            background: #3f51b5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(63, 81, 181, 0.3);
+        }
+
+        /* ✅ Success Icon */
+        .checkmark {
+            font-size: 50px;
+            color: #4caf50;
+            margin-bottom: 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="checkmark">✔</div>
+        <h2>Book Saved Successfully!</h2>
+        <a th:href="@{/books/getform}">➕ Add Another Book</a>
+        <br><br>
+        <a th:href="@{/books/getallbooks}">📚 View All Books</a>
+    </div>
+</body>
+</html>

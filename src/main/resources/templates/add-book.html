@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Book</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            width: 400px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #5c6bc0;
+            outline: none;
+            box-shadow: 0 0 6px rgba(92, 107, 192, 0.4);
+        }
+
+        /* Readonly styling */
+        input[readonly] {
+            background: #f1f1f1;
+            color: #555;
+            cursor: not-allowed;
+        }
+
+        button {
+            width: 100%;
+            background: #5c6bc0;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #3f51b5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(63, 81, 181, 0.3);
+        }
+
+        /* Small animation for form */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    <script th:inline="javascript">
+        // Store genre-discount and tax data from backend
+        let genreDiscounts = [[${genreDiscounts}]];
+        let genreTaxes = [[${genreTaxes}]];
+
+        function updateDiscountAndTax() {
+            let genre = document.getElementById("genre").value;
+            document.getElementById("discount").value = genreDiscounts[genre] || 0;
+            document.getElementById("tax").value = genreTaxes[genre] || 0;
+        }
+    </script>
+</head>
+<body>
+    <form th:action="@{/books/save}" th:object="${book}" method="post">
+        <h2>Add New Book</h2>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title" th:field="*{title}" required />
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" th:field="*{author}" required />
+
+        <label for="genre">Genre:</label>
+        <select id="genre" th:field="*{genre}" onchange="updateDiscountAndTax()">
+            <option value="" disabled selected>Select a genre</option>
+            <option th:each="genre : ${genreDiscounts.keySet()}"
+                    th:value="${genre}"
+                    th:text="${genre}">
+            </option>
+        </select>
+
+        <label for="price">Price:</label>
+        <input type="number" step="0.01" id="price" th:field="*{price}" required />
+
+        <label for="copies">Copies:</label>
+        <input type="number" id="copies" th:field="*{copies}" required />
+
+        <!-- New fields for display only -->
+        <label for="discount">Discount (%):</label>
+        <input type="text" id="discount" readonly />
+
+        <label for="tax">Tax (%):</label>
+        <input type="text" id="tax" readonly />
+
+        <button type="submit">Add Book</button>
+    </form>
+</body>
+</html>
